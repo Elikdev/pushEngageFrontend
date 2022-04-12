@@ -1,14 +1,35 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import Comment from '../components/Comment'
+import { fetchPostbyId } from '../features/posts/postSlice'
+import { toast } from 'react-toastify'
+
 
 function SinglePost() {
+  const [post, setPost] = useState({})
+  const {post_data_res, post_data_loading, post_data_error} = useSelector((state) => state.post) 
+  const dispatch = useDispatch()
+  const params = useParams()
+
+  const {data, success} = post_data_res
+
+  useEffect(() => {
+    if(success) {
+      setPost(data?.post)
+    }
+  }, [post_data_res, success, data])
+
+  useEffect(() => {
+    dispatch(fetchPostbyId({id: params?.postId}))
+  }, [params?.postId])
+
   return (
     <div className="post-container w-[90%] sm:w-[60%] mx-auto  mt-[40px]">
       <div className="post">
-        <h1 className="title font-semibold text-[#686868] text-xl mb-7">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, suscipit.</h1>
+        <h1 className="title font-semibold text-[#686868] text-xl mb-7">{post?.title}</h1>
         <p className="content text-sm text-[#333}">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In illum nemo quam ratione sit, dolore quasi nisi autem porro veniam incidunt libero laborum accusamus minima pariatur iste officiis quibusdam ea.
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil deleniti deserunt repellendus enim dolores veritatis eos molestiae, maiores aliquid fugit nam sint praesentium perspiciatis tempore voluptatem quis laborum quae cumque dolor possimus. Repellat, quidem autem unde dicta excepturi corporis. Aut, nobis. Officia dignissimos temporibus, tenetur, consectetur explicabo quasi sapiente odio cumque fugiat sit aspernatur praesentium, sint architecto recusandae. Natus nesciunt, porro incidunt eveniet ea, itaque illum maiores minus doloremque libero rerum? Maxime debitis fuga dicta eum. Saepe voluptatum fugiat vel dicta veniam, quas at ipsam. Cupiditate ex aut dolore.
+          {post?.content}
         </p>
       </div>
       <div className="add-comment border border-zinc-400 mt-10 px-2 py-4 drop-shadow-sm rounded-sm mb-[40px]">
@@ -28,8 +49,12 @@ function SinglePost() {
 
       {/* Comments and replies */}
       <div>
-        <aside><Comment replies={2}/></aside>
-        <aside><Comment/></aside>
+        {data?.comments?.length >= 1 ? data?.comments?.map((comment) => {
+          return (
+            <aside><Comment comment={comment
+            } replies={comment?.children}/></aside>
+          )
+        }) : (<p>No comments to display</p>)}
       </div>
     </div>
 
