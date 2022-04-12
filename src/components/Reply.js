@@ -24,10 +24,10 @@ function Reply({replies, replyId, commentId, postId}) {
 
  useEffect(() => {
    //filter based on the replyId
+   console.log(replyId)
    if(data){
     const new_data = [...data]
-    const sorted_data = new_data?.sort((a, b) => new Date(b?.createdAt).getTime() - new Date(a?.createdAt).getTime())
-    const current_data = sorted_data?.find((curr) => curr._id === replyId)
+    const current_data = new_data?.find((curr) => curr._id === replyId)
    setCurrReply(current_data)
    } 
 

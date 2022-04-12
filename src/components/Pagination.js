@@ -25,8 +25,6 @@ function Pagination({
           </span>
           to
           <span className="font-medium"> {currentPage * postsPerPage} </span>
-          of
-          <span className="font-medium"> {totalPosts} </span>
           results
         </p>
       </div>

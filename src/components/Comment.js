@@ -15,9 +15,6 @@ function Comment({ replies, comment }) {
 
   const handleShowAddReply = () => setShowAddReply(!showAddReply)
 
-  // useEffect(() => {
-  //   dispatch((fetchCommentReplies({postId: comment?.postId, commentId: comment?._id})))
-  // }, [])
 
   return (
     <>
