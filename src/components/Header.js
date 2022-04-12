@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { HiOutlinePlus, HiX } from "react-icons/hi"
 import AddPost from "./AddPost"
+import { useNavigate } from "react-router-dom"
 
 function Header() {
   const [showForm, setShowForm] = useState(false)
+  const navigate = useNavigate()
 
   const setformActive = () => setShowForm(!showForm)
 
@@ -11,7 +13,7 @@ function Header() {
     <div className="header-container bg-slate-900 text-white py-2 px-10 relative">
       <div className="header-content flex justify-between items-center">
         <div className="brand-name">
-          <p className="text-sky-400 font-bold text-2xl sm:text-3xl font-logo">
+          <p className="text-sky-400 font-bold text-2xl sm:text-3xl font-logo cursor-pointer" onClick={() => navigate("/")}>
             pushengage
           </p>
         </div>

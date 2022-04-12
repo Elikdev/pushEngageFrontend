@@ -28,7 +28,6 @@ function Reply({replies, replyId, commentId, postId}) {
     const new_data = [...data]
     const sorted_data = new_data?.sort((a, b) => new Date(a?.createdAt).getTime() - new Date(b?.createdAt).getTime())
     const current_data = sorted_data?.find((curr) => curr._id === replyId)
-   console.log(current_data)
    setCurrReply(current_data)
    } 
 

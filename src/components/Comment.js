@@ -66,7 +66,7 @@ function Comment({ replies, comment }) {
             {replies?.length >= 1 ? (
               replies?.map((reply) => {
                 return (
-                  <aside>
+                  <aside key={reply}>
                     <Reply replyId={reply} replies={replies} postId={comment?.postId} commentId={comment?._id} />
                   </aside>
                 )

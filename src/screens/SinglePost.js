@@ -13,6 +13,7 @@ function SinglePost() {
     (state) => state.post
   )
   const dispatch = useDispatch()
+  const {comment_data} = useSelector((state) => state.comment)
   const params = useParams()
 
   const { data, success } = post_data_res
@@ -25,7 +26,7 @@ function SinglePost() {
 
   useEffect(() => {
     dispatch(fetchPostbyId({ id: params?.postId }))
-  }, [params?.postId])
+  }, [params?.postId, comment_data])
 
   const handleSubmit = () => {
     if (comment) {
@@ -81,7 +82,7 @@ function SinglePost() {
         {data?.comments?.length >= 1 ? (
           data?.comments?.map((comment) => {
             return (
-              <aside>
+              <aside key={comment?._id}>
                 <Comment comment={comment} replies={comment?.children} />
               </aside>
             )

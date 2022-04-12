@@ -62,15 +62,17 @@ function BlogList() {
         : loading === false && <p>No posts to display</p>}
 
       {/* pagination */}
-      <Pagination
-        postsPerPage={postsPerPage}
-        paginateBack={paginateBack}
-        paginateFront={paginateFront}
-        paginateFirst={paginateFirst}
-        paginateLast={paginateLast}
-        currentPage={currentPage}
-        totalPosts={30}
-      />
+      {!loading && (
+        <Pagination
+          postsPerPage={postsPerPage}
+          paginateBack={paginateBack}
+          paginateFront={paginateFront}
+          paginateFirst={paginateFirst}
+          paginateLast={paginateLast}
+          currentPage={currentPage}
+          totalPosts={30}
+        />
+      )}
     </div>
   )
 }
