@@ -14,6 +14,7 @@ function AddPost({ setformActive, showForm}) {
    dispatch(addPost({title, content}))
    setContent("")
    setTitle("")
+   setformActive(!showForm)
   }
  }
 

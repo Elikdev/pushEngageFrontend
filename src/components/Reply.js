@@ -26,7 +26,7 @@ function Reply({replies, replyId, commentId, postId}) {
    //filter based on the replyId
    if(data){
     const new_data = [...data]
-    const sorted_data = new_data?.sort((a, b) => new Date(a?.createdAt).getTime() - new Date(b?.createdAt).getTime())
+    const sorted_data = new_data?.sort((a, b) => new Date(b?.createdAt).getTime() - new Date(a?.createdAt).getTime())
     const current_data = sorted_data?.find((curr) => curr._id === replyId)
    setCurrReply(current_data)
    } 

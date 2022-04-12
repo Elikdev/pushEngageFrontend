@@ -10,7 +10,7 @@ function BlogList() {
   const [postsPerPage] = useState(10)
 
   const dispatch = useDispatch()
-  const { loading, post_data, error } = useSelector((state) => state.post)
+  const { loading, post_data, error, post_form_res } = useSelector((state) => state.post)
 
   const { data: posts, pagination } = post_data
 
