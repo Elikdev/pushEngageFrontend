@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {HiX } from "react-icons/hi"
 import { addPost } from '../features/posts/postSlice'
 
 function AddPost({ setformActive, showForm}) {
  const [title, setTitle] = useState("")
+ const [disabled, setDisabled] = useState(true)
  const [content, setContent] = useState("")
  const dispatch = useDispatch()
 
@@ -17,6 +18,15 @@ function AddPost({ setformActive, showForm}) {
    setformActive(!showForm)
   }
  }
+
+ useEffect(() => {
+  if(title !== ""  && content !== ""){
+    setDisabled(false)
+  } else {
+    setDisabled(true)
+  }
+ }, [content, title, disabled])
+
 
   return (
    <div
@@ -39,20 +49,21 @@ function AddPost({ setformActive, showForm}) {
        />
      </div>
 
-     <div className="input-group mb-4">
+     <div className="input-group mb-4 relative">
        <label className="block mb-1 font-semibold">Content</label>
        <textarea
-         name=""
-         id=""
-         cols="25"
-         rows="5"
-         className="text-black w-full px-2"
+        name=""
+        cols="25"
+        rows="5"
+         id="post-content"
+         className="text-black w-full px-2 py-3 min-h-full"
+         value={content}
          onChange={(e) => setContent(e.target.value)}
-       ></textarea>
+       />
      </div>
 
      <div className="my-2 text-center">
-       <button className="border-2 border-cyan-500 rounded-md p-2 font-bold text-zinc-300">
+       <button className="border-2 border-cyan-500 rounded-md p-2 font-bold text-zinc-300 disabled:cursor-not-allowed" disabled={disabled} >
          Add new post
        </button>
      </div>

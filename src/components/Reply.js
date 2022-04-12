@@ -20,7 +20,7 @@ function Reply({replies, replyId, commentId, postId}) {
 
  useEffect(() => {
   dispatch(fetchCommentReplies({postId: postId, commentId: commentId}))
- }, [dispatch])
+ }, [])
 
  useEffect(() => {
    //filter based on the replyId
