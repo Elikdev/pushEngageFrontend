@@ -61,14 +61,14 @@ function Reply({replies, replyId, commentId, postId}) {
 
     {currReply?.children?.length >= 1 ? (
      <>
-     {showAddReply && <AddReply/>}
+     {showAddReply && <AddReply postId={currReply?.postId} parentId={currReply?._id} />}
     <main className={`ml-5 border-l ${showAddReply && replies ? "" : "hidden"} border-l-neutral-300 mt-[-40px] mb-2 pt-10 pb-2 pl-4`}>
       {currReply?.children?.map((data) => {
         <Reply replies={currReply?.children} replyId={data} postId={currReply?.parentId || currReply?.postId} commentId={currReply._id} />
       })}
    </main>
    </>
-   ) : (showAddReply && <AddReply/>)}
+   ) : (showAddReply && <AddReply postId={currReply?.postId} parentId={currReply?._id} />)}
     </>
   )
 }

@@ -57,7 +57,7 @@ function Comment({ replies, comment }) {
 
       {replies?.length >= 1 ? (
         <>
-          {showAddReply && <AddReply />}
+          {showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id}  />}
           <main
             className={`ml-5 border-l ${
               showAddReply && replies ? "" : "hidden"
@@ -77,7 +77,7 @@ function Comment({ replies, comment }) {
           </main>
         </>
       ) : (
-        showAddReply && <AddReply />
+        showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id} />
       )}
     </>
   )
