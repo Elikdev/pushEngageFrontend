@@ -26,7 +26,7 @@ function BlogList() {
 
   useEffect(() => {
     dispatch(fetchPosts({ limit: postsPerPage, page: currentPage }))
-  }, [dispatch, currentPage])
+  }, [])
 
   useEffect(() => {
     if (pagination) {

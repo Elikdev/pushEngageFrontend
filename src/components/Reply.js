@@ -3,35 +3,30 @@ import { useSelector, useDispatch } from 'react-redux'
 import {HiOutlineChevronDown} from "react-icons/hi"
 import { useParams } from 'react-router-dom'
 import AddReply from './AddReply'
-import { fetchCommentReplies } from '../features/comments/commentSlice'
 import dayjs from 'dayjs'
+import axios from "axios"
+import { fetchReply } from '../features/comments/commentSlice'
 
 const imagURL = 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651_960_720.png'
+const baseUrl = "https://pushengage.herokuapp.com/api/v1"
 
-function Reply({replies, replyId, commentId, postId}) {
+function Reply({replyId, parentId}) {
  const [showAddReply, setShowAddReply] = useState(false)
  const [currReply, setCurrReply] = useState({})
  const dispatch = useDispatch()
- const {comment_data} = useSelector(state => state.comment)
- const {data} = comment_data
- const params = useParams()
+ const {reply_data} = useSelector((state)=>state.comment)
 
 
+
+ useEffect(()=>{
+   if (reply_data){
+   setCurrReply(reply_data[replyId]?.data)
+   }
+ }, [reply_data])
 
  useEffect(() => {
-  dispatch(fetchCommentReplies({postId: postId, commentId: commentId}))
+    dispatch(fetchReply({parentId,replyId}))
  }, [])
-
- useEffect(() => {
-   //filter based on the replyId
-   console.log(replyId)
-   if(data){
-    const new_data = [...data]
-    const current_data = new_data?.find((curr) => curr._id === replyId)
-   setCurrReply(current_data)
-   } 
-
- }, [comment_data])
 
 
 
@@ -61,11 +56,9 @@ function Reply({replies, replyId, commentId, postId}) {
     {currReply?.children?.length >= 1 ? (
      <>
      {showAddReply && <AddReply postId={currReply?.postId} parentId={currReply?._id} />}
-    <main className={`ml-5 border-l ${showAddReply && replies ? "" : "hidden"} border-l-neutral-300 mt-[-40px] mb-2 pt-10 pb-2 pl-4`}>
-      {currReply?.children?.map((data) => {
-        <Reply replies={currReply?.children} replyId={data} postId={currReply?.parentId || currReply?.postId} commentId={currReply._id} />
-      })}
-   </main>
+    {showAddReply && <main className={`ml-5 border-l border-l-neutral-300 mt-[-40px] mb-2 pt-10 pb-2 pl-4`}>
+      {currReply?.children?.map((data) => <Reply key={data} replyId={data} parentId={currReply?._id}  />)}
+   </main>}
    </>
    ) : (showAddReply && <AddReply postId={currReply?.postId} parentId={currReply?._id} />)}
     </>

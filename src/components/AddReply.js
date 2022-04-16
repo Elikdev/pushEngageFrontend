@@ -11,7 +11,6 @@ function AddReply({postId, parentId}) {
   const handleSubmit = (e) => {
     if(comment) {
       dispatch(addReplyToComment({postId, parentId, comment}))
-      setComment("")
     }
   }
 

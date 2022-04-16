@@ -1,20 +1,32 @@
 import dayjs from "dayjs"
 import React, { useState, useEffect } from "react"
 import { HiOutlineChevronDown } from "react-icons/hi"
-import { useDispatch } from "react-redux"
-import { fetchCommentReplies } from "../features/comments/commentSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchReply } from "../features/comments/commentSlice"
 import AddReply from "./AddReply"
 import Reply from "./Reply"
 
 const imagURL =
   "https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651_960_720.png"
 
-function Comment({ replies, comment }) {
+function Comment({ parentId, commentId }) {
   const [showAddReply, setShowAddReply] = useState(false)
+  const [comment, setComment] = useState({})
   const dispatch = useDispatch()
-
   const handleShowAddReply = () => setShowAddReply(!showAddReply)
+  const {reply_data} = useSelector((state)=>state.comment)
 
+
+
+  useEffect(()=>{
+    if (reply_data){
+    setComment(reply_data[commentId]?.data)
+    }
+  }, [reply_data])
+ 
+  useEffect(() => {
+     dispatch(fetchReply({parentId, replyId:commentId}))
+  }, [])
 
   return (
     <>
@@ -47,24 +59,22 @@ function Comment({ replies, comment }) {
             <HiOutlineChevronDown
               className={`inline ml-0 ${showAddReply ? "rotate-180" : ""}`}
             />
-            {replies?.length})
+            {comment?.children?.length})
           </small>
         </div>
       </div>
 
-      {replies?.length >= 1 ? (
+      {comment?.children?.length >= 1 ? (
         <>
-          {showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id}  />}
-          <main
-            className={`ml-5 border-l ${
-              showAddReply && replies ? "" : "hidden"
-            } border-l-neutral-300 mt-[-40px] mb-2 pt-10 pb-2 pl-4`}
+          {showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id} />}
+          {showAddReply && <main
+            className={`ml-5 border-l border-l-neutral-300 mt-[-40px] mb-2 pt-10 pb-2 pl-4`}
           >
-            {replies?.length >= 1 ? (
-              replies?.map((reply) => {
+            {comment?.children?.length >= 1 ? (
+              comment?.children?.map((reply) => {
                 return (
                   <aside key={reply}>
-                    <Reply replyId={reply} replies={replies} postId={comment?.postId} commentId={comment?._id} />
+                    <Reply replyId={reply} parentId={comment?._id}/>
                   </aside>
                 )
               })
@@ -72,9 +82,10 @@ function Comment({ replies, comment }) {
               <small></small>
             )}
           </main>
+          }
         </>
       ) : (
-        showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id} />
+        showAddReply && <AddReply postId={comment?.postId} parentId={comment?.parentId || comment?._id}/>
       )}
     </>
   )

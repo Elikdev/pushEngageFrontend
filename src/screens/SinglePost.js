@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import Comment from "../components/Comment"
 import { fetchPostbyId } from "../features/posts/postSlice"
 import { toast } from "react-toastify"
-import { addCommentToPost } from "../features/comments/commentSlice"
+import { addCommentToPost } from "../features/posts/postSlice"
 
 function SinglePost() {
   const [post, setPost] = useState({})
@@ -13,7 +13,6 @@ function SinglePost() {
     (state) => state.post
   )
   const dispatch = useDispatch()
-  const {comment_data} = useSelector((state) => state.comment)
   const params = useParams()
 
   const { data, success } = post_data_res
@@ -26,11 +25,12 @@ function SinglePost() {
 
   useEffect(() => {
     dispatch(fetchPostbyId({ id: params?.postId }))
-  }, [params?.postId, comment_data])
+  }, [params?.postId])
 
   const handleSubmit = () => {
     if (comment) {
       dispatch(addCommentToPost({ comment, postId: params?.postId }))
+      setComment("")
     }
   }
 
@@ -63,7 +63,7 @@ function SinglePost() {
               className="border border-cyan-600 px-2 py-2 w-full rounded-md inline-block"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-            ></textarea>
+            />
           </div>
 
           <div className="input-btn mt-3">
@@ -83,7 +83,7 @@ function SinglePost() {
           data?.comments?.map((comment) => {
             return (
               <aside key={comment?._id}>
-                <Comment comment={comment} replies={comment?.children} />
+                <Comment commentId={comment._id} parentId={comment?.postId} />
               </aside>
             )
           })
